@@ -1,0 +1,134 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "linkedList.h"
+
+/*
+ * Keyan Fayaz - 14kf34
+ * Student ID#: 10188190
+ * 
+ * CISC220 w/ M. Lamb 
+ * Assignment 5: Linked Lists
+ */
+
+
+
+// Adds value to the start of the list, returns pointer of the modified list
+LinkedList addToStart(LinkedList list, int value) {
+
+  LinkedList newNode = (LinkedList)malloc(sizeof(struct ListNode));   
+
+  newNode->data = value;
+  newNode->next = list;
+  list = newNode;
+
+  return list;
+
+}
+
+// Adds value to the end of the list, returns pointer of the modified list
+LinkedList addToEnd(LinkedList list, int value) {
+
+  LinkedList newNode = (LinkedList)malloc(sizeof(struct ListNode));
+
+  newNode->data = value;
+  newNode->next = NULL;
+
+  LinkedList temp;
+  temp = list;
+
+  if (list == NULL) {
+    list = newNode;
+  } else {
+    
+    while (temp->next != NULL) {
+      temp = temp->next;
+    }
+    temp->next = newNode;
+  }
+  return list; 
+
+}
+
+// Deletes first element and returns pointer of the modified list
+LinkedList deleteFirst(LinkedList list) {
+
+  LinkedList temp, prev;
+  temp = list;
+
+  if (list == NULL) {
+    return NULL;
+  } else if (list->next == NULL) {
+    list = NULL;
+    free(temp);
+  } else {
+    prev = list;
+    list = list->next; // Eliminate first node
+    free(prev); // Free space on heap
+
+    if (list->next != NULL) {
+      return list;
+    }
+  }
+
+  return list;
+}
+
+// Deletes the last element and returns pointer of the modified list
+LinkedList deleteLast(LinkedList list) {
+
+  // Create "cycle-through" pointer and previous to that element pointer
+  LinkedList temp, prev;
+  temp = list;
+
+  if (list == NULL) {
+    return NULL;
+  } else if (list->next == NULL) {
+    list = NULL;
+    free(temp);
+  } else {
+    while(temp->next != NULL) {
+      prev = temp;
+      temp = temp->next;
+    }
+    prev->next = NULL;
+    free(temp);
+  }
+
+  return list;
+}
+
+// Prints the list. Format: [1,2,3,4] -- square brackets, seperated by commas, no spaces
+void printList(LinkedList list) {
+  
+  LinkedList temp;
+  temp = list;
+  
+  printf("[");
+  while ((temp != NULL) && (temp->next != NULL)) {
+    printf("%d,", temp->data);
+    temp = temp->next;
+  }
+  if (temp != NULL) {
+    printf("%d", temp->data);
+  }
+  printf("]\n");
+}
+
+// Searches the list and returns 1 if found, 0 otherwise
+int search(LinkedList list, int value) {
+
+  while (list != NULL) {
+    if (list->data == value) {
+      return 1; // If the value is found
+    }
+    list = list->next;
+  }
+  
+  return 0; // If not found
+}
+
+
+
+
+
+
